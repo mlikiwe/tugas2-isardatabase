@@ -40,7 +40,7 @@ Setelah selesai dengan dependencies, kita perlu membuat model/schema kita untuk 
 Pertama, kita buat folder baru yakni `models` yang di dalamnya terdapat file `todo.dart`
 
 Pertama, kita akan membuat kelas, yaitu Todo yang akan menjadi schema kita. Agar Isar tahu bahwa class Todo merupakan collection, maka kita harus menambahkan `@Collection` tepat di atas class Todo. Kita juga perlu melakukan `import 'package:isar/isar.dart';`. Berikut merupakan tampilan awalnya.
-``` cpp
+``` dart
 import 'package:isar/isar.dart';
 
 @Collection()
@@ -77,7 +77,7 @@ Perintah tersebut akan melakukan build schema kita dan akan menghasilkan file to
 
 ## Create Database Service
 Di sini kita akan membauat static class untuk dapat berinteraksi dengan database kita. Pertama kita create folder baru di dalam folder libs yakni `services` dan didalamnya akan ditambahkan file `database_service.dart`. Tambahkan kode berikut
-```cpp
+```dart
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tugas2isardb/models/todo.dart';
@@ -96,7 +96,7 @@ class DatabaseService {
 Kelas ini memiliki method yang bertanggung jawab untuk mengatur koneksi ke database Isar kita. Di sini, kita memanfaatkan `getApplicationDocumentsDirectory()` dari `path_provider` untuk mendapatkan direktori data aplikasi kita. Setelah database berhasil dibuka, ia disimpan dalam variabel statis `db`, sehingga dapat diakses tanpa perlu membuka koneksi berulang kali.
 
 Untuk menggunakannya, tambahkan kode berikut di file `main.dart`.
-```cpp
+```dart
 ...
 void main() async {
   await setup();
