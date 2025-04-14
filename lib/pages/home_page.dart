@@ -16,8 +16,6 @@ class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   List<Todo> toDoList = [];
 
-  StreamSubscription? toDoListStream;
-
   @override
   void initState() {
     super.initState();
@@ -26,12 +24,6 @@ class _HomePageState extends State<HomePage> {
         toDoList = data;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    toDoListStream?.cancel();
-    super.dispose();
   }
 
   void checkBoxChanged(Todo? todo) {
