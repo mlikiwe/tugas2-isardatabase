@@ -7,10 +7,10 @@ Berikut ini merupakan langkah-langkah implementasi database Isar, dimulai dari i
 
 ## Clone Flutter Project
 Link Github : https://github.com/mlikiwe/ppb-simplecrudtugas1.git  
-Di project tersebut, telah terdapat fungsi CRUD dengan memanfaatkan list untuk melakukan To do List. Terdapat tiga file utama, yakni `main.dart`, `home_page.dart`, dan `todo_list.dart`. File `home_page.dart` akan memuat halaman utama kita, di mana di dalamnya terdapat method atau fungsi-fungsi dan widget yang membangun fungsionalitas dari suatu aplikasi to do list. Sementara itu, file `todo_list.dart` bisa dibilang adalah sebuah card untuk menampilkan sebuah item task beserta fitur-fitur di dalamnya, seperti edit, delete, dan mark as completed.
+Di project tersebut, telah terdapat fungsi CRUD dengan memanfaatkan list untuk melakukan To do List. Terdapat tiga file utama, yakni `main.dart`, `home_page.dart`, dan `todo_list.dart`. File `home_page.dart` akan memuat halaman utama kita, di dalamnya terdapat method dan widget yang membangun fungsionalitas dari suatu aplikasi to do list. Sementara itu, file `todo_list.dart` bisa dibilang sebuah card untuk menampilkan sebuah item task beserta fitur-fitur di dalamnya, seperti edit, delete, dan mark as completed.
 
 ## Instalasi Isar DB
-Kita memerlukan instalasi Isar Database di dalam project kita. Caranya cukup simple, kita hanya perlu untuk memasukkan dependencies nya kedalam `pubspec.yaml`. Pertama, kita dapat mengunjungi website Isar (seluruh link telah tersedia di paling bawah). Klik icon copy yang berada di samping headline ataupun dapat langsung ketik manual `isar: ^3.1.0+1`. 
+Kita memerlukan instalasi Isar Database dengan cara memasukkan dependencies nya kedalam `pubspec.yaml`. Pertama, kita dapat mengunjungi website Isar (seluruh link telah tersedia di paling bawah). Klik icon copy yang berada di samping headline ataupun dapat langsung ketik manual `isar: ^3.1.0+1`. 
 
 Selain itu, kita memerlukan path provider yang juga dapat dikunjungi pada link di bawah. Path provider nantinya berfungsi untuk memberikan path direktori lokal perangkat tempat file bisa disimpan secara aman oleh aplikasi. Selain kedua dependencies di atas, kita juga perlu menambahkan `isar_flutter_libs`, `isar_generator`, dan `build_runner`. Khusus untuk `isar_generator` dan `build_runner`, kita harus tempatkan keduanya di bagian `dev_dependencies`. Kita juga harus menyesuaikan versi dari `isar_flutter_libs`, `isar_generator`, dan `build_runner` sesuai dengan versi isar, sebagai contoh adalah versi 3.1.0+1. Berikut merupakan tampilan akhir dari pubspec.yaml di project kita
 ``` yaml
@@ -37,10 +37,9 @@ dev_dependencies:
 ```
 
 ## Setup Database
-Setelah selesai dengan dependencies, kita perlu membuat model/schema kita untuk mendefinisikan database milik kita nantinya. Dikarenakan Isar merupakan database nosql, maka kita akan membuat yang namanya Collection. Collection ini dapat kita anggap sebagai tabel apabila kita menggunakan MySQL dan database SQL lainnya. 
-Pertama, kita buat folder baru yakni `models` yang di dalamnya terdapat file `todo.dart`
+Selanjutnya, kita perlu membuat model/schema kita untuk mendefinisikan database milik kita. Dikarenakan Isar merupakan database nosql, maka kita akan membuat yang namanya Collection. Collection ini dapat kita anggap sebagai tabel. Pertama, kita buat folder baru yakni `models` yang di dalamnya terdapat file `todo.dart`
 
-Pertama, kita akan membuat kelas, yaitu Todo yang akan menjadi schema kita. Agar Isar tahu bahwa class Todo merupakan collection, maka kita harus menambahkan `@Collection` tepat di atas class Todo. Kita juga perlu melakukan `import 'package:isar/isar.dart';`. Berikut merupakan tampilan awalnya.
+Selanjutnya, kita akan membuat kelas, yaitu Todo yang akan menjadi schema kita. Agar Isar tahu bahwa class Todo merupakan collection, maka kita harus menambahkan `@Collection` tepat di atas class Todo. Kita juga perlu melakukan `import 'package:isar/isar.dart';`. Berikut merupakan tampilan awalnya.
 ``` dart
 import 'package:isar/isar.dart';
 
@@ -110,7 +109,7 @@ Future<void> setup() async {
 }
 ...
 ```
-Di main, kita akan memanggil fungsi setup uang tadi kita telah buat. Sekarang, setup Isar database sudah selesai. Kita tinggal mengimplementasikannya ke fungsi CRUD di home_page kita.
+Di main, kita akan memanggil fungsi setup uang tadi kita telah buat. Sekarang, setup Isar database sudah selesai. Kita tinggal mengimplementasikannya ke fungsi CRUD di `home_page` kita.
 
 ## Implementasi Database Isar
 Kita akan menggunakan fitur CRUD dari Isar yakni put dan delete. Kita akan hanya melakukan modifikasi di bagian file `home_page.dart` saja karena di sana terdapat method-method untuk kebutuhan CRUD.
@@ -158,14 +157,14 @@ void saveNewTask() async {
 }
 ```
 `if(_controller.text.isNotEmpty) {...}` Cek apakah controller text tidak empty\
-`Todo newTodo = Todo();` Membuat objek Todo baru bernama newTodo\
-`newTodo = Todo().copyWith(taskName: _controller.text,);` Masukkan controller text ke atribut `taskName` lalu masukkan ke objek newTodo dengan copyWith.\
-`await DatabaseService.db.writeTxn(() async {await DatabaseService.db.todos.put(newTodo);});` Lakukan penulisan ke database dengan put
+`Todo newTodo = Todo()` Membuat objek Todo baru bernama newTodo\
+`newTodo = Todo().copyWith(taskName: _controller.text,)` Masukkan controller text ke atribut `taskName` lalu masukkan ke objek newTodo dengan copyWith.\
+`await DatabaseService.db.writeTxn(() async {await DatabaseService.db.todos.put(newTodo);})` Lakukan penulisan ke database dengan put
 
 ### Modifikasi Method `_showEditTaskDialog`
 Method ini berfungsin untuk melakukan edit. Edit/Update di Isar memiliki satu fungsi yang sama yakni put, konsepnya, apabila index atau id dari item yang akan diedit null, maka akan dilakukan insert. Sedangkan, apabila id nya tidak null, maka akan dilakukan update.
 
-Kita akan memodifikasi di bagian `onPressed` dari button save. Sebelumnya, ganti parameter method menjadi `(Todo? todo)`. Tambahkan baris kode `_controller.text = todo?.taskName ?? '';` di bagian paling atas fungsi. Lalu, ganti isi dari onPressed menjadi kode berikut:
+Kita akan memodifikasi di bagian `onPressed` dari button save. Sebelumnya, ganti parameter method menjadi `(Todo? todo)`. Tambahkan baris kode `_controller.text = todo?.taskName ?? ''` di bagian paling atas fungsi. Lalu, ganti isi dari onPressed menjadi kode berikut:
 ``` dart
 onPressed: () async {
   if (_controller.text.isNotEmpty && todo != null) {
