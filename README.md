@@ -233,6 +233,9 @@ Ganti juga di bagian filter untuk List uncompleted dan completed sehingga sepert
 ```
 Pada return value TodoList, sesuaikan parameter pada masing-masing fungsi yang telah kita edit sebelumnya. Lakukan untuk `uncompletedTask` dan `completedTask`
 
+## Screenshot Akhir
+![alt text](screenshot/image.png)
+
 ## Link Sumber
 - isar : https://pub.dev/packages/isar
 - path_provider : https://pub.dev/packages/path_provider
